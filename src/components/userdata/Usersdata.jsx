@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import axios from "axios";
-import { Base_url } from "./Baseurl";
+
+const BASE_URL = import.meta.env.VITE_BASE_URL;
 
 const CallRecordsGrid = () => {
   const [callRecords, setCallRecords] = useState([]);
@@ -14,7 +15,7 @@ const CallRecordsGrid = () => {
       setLoading(true);
       setError("");
       try {
-        const response = await axios.get(`${Base_url}`);
+        const response = await axios.get(`${BASE_URL}`);
         if (isMounted) {
           setCallRecords(response.data.data || []);
         }
@@ -31,7 +32,6 @@ const CallRecordsGrid = () => {
     };
 
     fetchData();
-
     return () => {
       isMounted = false;
     };
@@ -40,25 +40,19 @@ const CallRecordsGrid = () => {
   return (
     <div className="p-4">
       <h2 className="text-xl font-bold mb-4">Call Records</h2>
-
-      {/* Loader */}
       {loading && (
         <div className="flex justify-center items-center h-screen">
           <div className="animate-spin rounded-full h-10 w-10 border-t-2 border-b-2 border-blue-500"></div>
           <span className="ml-4 text-blue-700 font-semibold">
-            Loading CallReacords....
+            Loading CallRecords...
           </span>
         </div>
       )}
-
-      {/* Error */}
       {error && (
         <div className="bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded mb-4">
           {error}
         </div>
       )}
-
-      {/* Table */}
       {!loading && !error && (
         <div className="overflow-x-auto">
           <table className="min-w-full bg-white border border-gray-200">
